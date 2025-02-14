@@ -7,9 +7,8 @@ import 'package:flutter/painting.dart';
 import '../cross_cache.dart';
 
 // Method signature for _loadAsync decode callbacks.
-typedef _SimpleDecoderCallback = Future<ui.Codec> Function(
-  ui.ImmutableBuffer buffer,
-);
+typedef _SimpleDecoderCallback =
+    Future<ui.Codec> Function(ui.ImmutableBuffer buffer);
 
 @immutable
 class CachedNetworkImage extends ImageProvider<NetworkImage>
@@ -31,6 +30,10 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
   final Map<String, String>? headers;
 
   @override
+  WebHtmlElementStrategy get webHtmlElementStrategy =>
+      WebHtmlElementStrategy.never;
+
+  @override
   Future<NetworkImage> obtainKey(ImageConfiguration configuration) {
     return SynchronousFuture<NetworkImage>(this);
   }
@@ -50,10 +53,11 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
       chunkEvents: chunkEvents.stream,
       scale: key.scale,
       debugLabel: key.url,
-      informationCollector: () => <DiagnosticsNode>[
-        DiagnosticsProperty<ImageProvider>('Image provider', this),
-        DiagnosticsProperty<NetworkImage>('Image key', key),
-      ],
+      informationCollector:
+          () => <DiagnosticsNode>[
+            DiagnosticsProperty<ImageProvider>('Image provider', this),
+            DiagnosticsProperty<NetworkImage>('Image key', key),
+          ],
     );
   }
 
